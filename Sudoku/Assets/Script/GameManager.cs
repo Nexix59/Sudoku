@@ -12,18 +12,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Mistakes = 0;
+        Mistakes = 3;
         Lose = false;
     }
 
     private void Update()
     {
-        if(Correct >= 81)
+        if(Correct >= 80)
         {
             Won = true;
         }
 
-        if (Mistakes >= 3)
+        if (Mistakes <= 1)
         {
             Lose = true;
         }

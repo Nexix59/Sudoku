@@ -11,11 +11,19 @@ public class Stuff : MonoBehaviour
 
     private static Stuff _instance;
     public GameObject Selecti;
-    GameManager gameManager;
+    public GameObject GameManageral;
+
+    public GameObject EndBack;
+    public GameObject EndFront;
+    public GameObject YouWon;
+    public GameObject YouLost;
+    public GameObject RestartButt;
+    public GameObject MenuButt;
 
     [SerializeField] public string Nombre;
 
     public static Stuff Instance { get { return _instance; } }
+
 
     void Awake()
     {
@@ -27,6 +35,12 @@ public class Stuff : MonoBehaviour
         {
             _instance = this;
         }
+        EndBack.SetActive(false);
+        EndFront.SetActive(false);
+        YouWon.SetActive(false);
+        YouLost.SetActive(false);
+        RestartButt.SetActive(false);
+        MenuButt.SetActive(false);
     }
 
     public void ClickSelect(GameObject unitToAdd)
@@ -36,16 +50,10 @@ public class Stuff : MonoBehaviour
         Debug.Log(unitToAdd.GetComponent<Requirement>().RequiredNombre);
         Selecti = unitToAdd;
         Debug.Log(Selecti);
-        //unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public void DeselectAll()
     {
-        /*foreach (var unit in SelectedCube)
-        {
-            unit.transform.GetChild(0).gameObject.SetActive(false);
-        }*/
-
         SelectedCube.Clear();
     }
 
@@ -66,19 +74,40 @@ public class Stuff : MonoBehaviour
         {
             Selecti.GetComponentInChildren<TextMeshProUGUI>().text = Nombre;
             Selecti.GetComponent<Requirement>().RequiredNombre = "NYA";
-            gameManager.Correct++;
-            //Debug.Log(SelectedCube[0].GetComponent<Requirement>().RequiredNombre);
+            GameManageral.GetComponent<GameManager>().Correct++;
             Debug.Log("Changed");
-            Debug.Log(gameManager.Correct);
+            Debug.Log(GameManageral.GetComponent<GameManager>().Correct);
         } else
         {
-            gameManager.Mistakes++;
+            GameManageral.GetComponent<GameManager>().Mistakes--;
             Debug.Log("Nope");
-            Debug.Log(gameManager.Mistakes);
+            Debug.Log(GameManageral.GetComponent<GameManager>().Mistakes);
         }
-        Debug.Log("Oof");   
+
+        if (GameManageral.GetComponent<GameManager>().Won == true && GameManageral.GetComponent<GameManager>().Lose == false)
+        {
+            EndBack.SetActive(true);
+            EndFront.SetActive(true);
+            YouWon.SetActive(true);
+            YouLost.SetActive(false);
+            RestartButt.SetActive(true);
+            MenuButt.SetActive(true);
+            Debug.Log("WINNER");
+        }
+        
+        if (GameManageral.GetComponent<GameManager>().Won == false && GameManageral.GetComponent<GameManager>().Lose == true)
+        {
+            EndBack.SetActive(true);
+            EndFront.SetActive(true);
+            YouWon.SetActive(false);
+            YouLost.SetActive(true);
+            RestartButt.SetActive(true);
+            MenuButt.SetActive(true);
+            Debug.Log("LOSER");
+        }
+
     }
-    
+
     void Update()
     {
 
